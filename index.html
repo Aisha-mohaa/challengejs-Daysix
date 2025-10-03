@@ -80,27 +80,41 @@
     feather.replace(); // Render icons
 
     let cart = 0;
+    let total = 0;
     const cartBadge = document.getElementById("cartBadge");
+    const cartSummary = document.getElementById("cartSummary");
+    const totalPrice = document.getElementById("totalPrice");
+
     const addButtons = document.querySelectorAll(".addBtn");
     const removeButtons = document.querySelectorAll(".removeBtn");
 
     // Add to cart
     addButtons.forEach(btn => {
       btn.addEventListener("click", () => {
+        let price = parseInt(btn.getAttribute("data-price"));
         cart++;
-        cartBadge.textContent = cart;
+        total += price;
+        updateCart();
       });
     });
 
     // Remove from cart
     removeButtons.forEach(btn => {
       btn.addEventListener("click", () => {
-        if (cart > 0) {
+        let price = parseInt(btn.getAttribute("data-price"));
+        if (cart > 0 && total >= price) {
           cart--;
-          cartBadge.textContent = cart;
+          total -= price;
+          updateCart();
         }
       });
     });
+
+    function updateCart() {
+      cartBadge.textContent = cart;
+      cartSummary.textContent = `Cart: ${cart} items`;
+      totalPrice.textContent = `Total: $${total}`;
+    }
   </script>
 </body>
 </html>
